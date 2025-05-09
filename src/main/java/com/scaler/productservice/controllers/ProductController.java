@@ -36,7 +36,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long productId){
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return null;
     }
 
     @PutMapping("/{id}")
