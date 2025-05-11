@@ -1,6 +1,7 @@
 package com.scaler.productservice.controllers;
 
 import com.scaler.productservice.models.Product;
+import com.scaler.productservice.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -14,24 +15,28 @@ import java.util.List;
 public class ProductController {
 //    private HttpStatus status;
 
+    private final ProductService productService;
+
+    public ProductController(ProductService productService){
+        this.productService = productService;
+    }
+
     @GetMapping("/{id}")
     public Product getSingleProduct(@PathVariable("id") Long productId){
         // should we call Fakestore api here?
         // No, we will not call external APIs in this project.
         // Create service layer to call external APIs.
-        return new Product();
+        return productService.getSingleProduct(productId);
     }
 
     @GetMapping("/")
     public List<Product> getAllProducts(){
-        return new ArrayList<>();
+        return productService.getAllProducts();
     }
 
     @PostMapping("/")
     public Product createProduct(@RequestBody Product product){
-        Product newProduct;
-        newProduct = new Product();
-        return newProduct;
+        return null;
     }
 
     @DeleteMapping("/{id}")
@@ -41,12 +46,12 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public Product replaceProduct(@PathVariable("id") Long productId, @RequestBody Product product){
-        return new Product();
+        return null;
     }
 
-    @PatchMapping("/id")
+    @PatchMapping("/{id}")
     public Product updateProduct(@PathVariable("id") Long productId, @RequestBody Product product){
-        return new Product();
+        return null;
     }
 }
 

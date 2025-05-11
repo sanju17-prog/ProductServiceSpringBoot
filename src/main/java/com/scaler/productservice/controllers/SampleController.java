@@ -15,11 +15,7 @@ public class SampleController {
     // path: http://<domain>/sample/sayHello1
     @GetMapping("/sayHello1")
     public String sample1(@RequestParam("x") int x){
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < x; i++){
-            sb.append("Hello World\n");
-        }
-        return sb.toString();
+        return "Hello World\n".repeat(Math.max(0, x));
     }
 
 }
