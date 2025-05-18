@@ -1,5 +1,7 @@
 package com.scaler.productservice.controllers;
 
+import com.scaler.productservice.dtos.ExceptionDto;
+import com.scaler.productservice.exceptions.ProductNotFoundException;
 import com.scaler.productservice.models.Product;
 import com.scaler.productservice.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,28 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long productId){
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId) throws ProductNotFoundException{
         // should we call Fakestore api here?
         // No, we will not call external APIs in this project.
         // Create service layer to call external APIs.
-        return productService.getSingleProduct(productId);
+//        throw new RuntimeException("Something went wrong");
+        ResponseEntity<Product> responseEntity =
+                new ResponseEntity<>(
+                        productService.getSingleProduct(productId),
+                        HttpStatus.OK
+                );
+
+        return responseEntity;
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionDto> handleRuntimeException(){
+        ExceptionDto exceptionDto = new ExceptionDto();
+        exceptionDto.setMessage("Something went wrong handling from controller!");
+        exceptionDto.setResolutionDetails("Please try again later... Make sure you have a valid credentials!");
+        return new ResponseEntity<>(
+                exceptionDto,
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/")
@@ -40,7 +59,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long productId){
+    public Product deleteProduct(@PathVariable("id") Long productId){
         return null;
     }
 
